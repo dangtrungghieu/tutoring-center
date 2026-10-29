@@ -1,0 +1,23 @@
+### 1. Test Tạo phòng mới thành công (Kỳ vọng: 201 Created)
+POST http://localhost:8080/api/v1/rooms
+Content-Type: application/json
+
+{
+  "address": "Phòng A101 - Tầng 1",
+  "capacity": 30
+}
+
+### 2. Test Lỗi Validation - Để trống address và capacity < 1 (Kỳ vọng: 400 Bad Request)
+POST http://localhost:8080/api/v1/rooms
+Content-Type: application/json
+
+{
+  "address": "",
+  "capacity": -5
+}
+
+### 3. Test Lấy danh sách tất cả phòng (Kỳ vọng: 200 OK)
+GET http://localhost:8080/api/v1/rooms
+
+### 4. Test Tìm phòng không tồn tại (Kỳ vọng: 404 Not Found)
+GET http://localhost:8080/api/v1/rooms/9999
