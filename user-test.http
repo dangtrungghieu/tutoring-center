@@ -1,0 +1,91 @@
+### ==========================================
+### 1. TEST TẠO MỚI USER (POST)
+### ==========================================
+
+### 1.1. Tạo User thành công (Kỳ vọng: 201 Created)
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+  "email": "hieu.dang@gmail.com",
+  "password": "Password123@",
+  "role": "ADMIN"
+}
+
+### 1.2. Tạo User thành công - Giảng viên (Kỳ vọng: 201 Created)
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+  "email": "teacher.toan11@gmail.com",
+  "password": "StrongPass456!",
+  "role": "TEACHER"
+}
+
+### 1.3. Lỗi Validation - Mật khẩu yếu, thiếu chữ hoa và ký tự đặc biệt (Kỳ vọng: 400 Bad Request)
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+  "email": "student01@gmail.com",
+  "password": "matkhauyeu123",
+  "role": "STUDENT"
+}
+
+### 1.4. Lỗi Validation - Sai định dạng email (Kỳ vọng: 400 Bad Request)
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+  "email": "hieu.dang.email.sai",
+  "password": "Password123@",
+  "role": "STUDENT"
+}
+
+### 1.5. Lỗi Nghiệp vụ - Trùng Email (Kỳ vọng: Lỗi do RuntimeException ném ra)
+### Lưu ý: Phải chạy request 1.1 thành công trước rồi mới chạy request này.
+POST http://localhost:8080/api/v1/users
+Content-Type: application/json
+
+{
+  "email": "hieu.dang@gmail.com",
+  "password": "NewPassword789!",
+  "role": "ADMIN"
+}
+
+
+### ==========================================
+### 2. TEST XEM USER (GET)
+### ==========================================
+
+### 2.1. Lấy danh sách tất cả user (Kỳ vọng: 200 OK)
+GET http://localhost:8080/api/v1/users
+
+### 2.2. Lấy chi tiết 1 user theo ID (Kỳ vọng: 200 OK)
+GET http://localhost:8080/api/v1/users/1
+
+### 2.3. Lấy chi tiết user KHÔNG tồn tại (Kỳ vọng: Lỗi RuntimeException)
+GET http://localhost:8080/api/v1/users/9999
+
+
+### ==========================================
+### 3. TEST CẬP NHẬT USER (PUT)
+### ==========================================
+
+### 3.1. Cập nhật User thành công (Kỳ vọng: 200 OK)
+### (Dùng DTO UserRequestUpdate - chỉ đổi pass và role)
+PUT http://localhost:8080/api/v1/users/1
+Content-Type: application/json
+
+{
+  "password": "UpdatedPass321#",
+  "role": "SUPER_ADMIN"
+}
+
+
+### ==========================================
+### 4. TEST XÓA USER (DELETE)
+### ==========================================
+
+### 4.1. Xóa user thành công (Kỳ vọng: 204 No Content)
+DELETE http://localhost:8080/api/v1/users/2
