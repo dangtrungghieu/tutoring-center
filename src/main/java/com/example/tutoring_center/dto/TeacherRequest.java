@@ -1,6 +1,7 @@
 package com.example.tutoring_center.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record TeacherRequest(
@@ -8,5 +9,6 @@ public record TeacherRequest(
         String fullName,
         @Pattern(regexp = "^\\d{10}$", message = "Số điện thoại phải bao gồm đúng 10 chữ số!")
         String phone,
+        @NotNull(message = "Tài khoản liên kết không được để trống!")
         Long userId
 ){}

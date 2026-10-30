@@ -1,0 +1,76 @@
+### ==========================================
+### 1. TEST TẠO MỚI TEACHER (ADMIN)
+### ==========================================
+
+### 1.1. Tạo Teacher thành công (Kỳ vọng: 201 Created)
+POST http://localhost:8080/api/v1/teachers
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "fullName": "Đặng Trung Hiếu",
+  "phone": "0987654321"
+}
+
+### 1.2. Tạo Teacher thất bại - User không có quyền TEACHER (Kỳ vọng: Lỗi 400 hoặc 500 do bạn custom)
+POST http://localhost:8080/api/v1/teachers
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "fullName": "Người Dùng Thường",
+  "phone": "0111222333"
+}
+
+### ==========================================
+### 2. TEST LẤY DANH SÁCH TEACHER (GET ALL)
+### ==========================================
+
+### 2.1. Admin lấy tất cả (Kỳ vọng: 200 OK, thấy cả người đã bị xóa)
+GET http://localhost:8080/api/v1/teachers/admin
+
+### 2.2. Học viên lấy danh sách (Kỳ vọng: 200 OK, chỉ thấy người đang hoạt động)
+GET http://localhost:8080/api/v1/teachers/public
+
+
+### ==========================================
+### 3. TEST XEM CHI TIẾT TEACHER (GET BY ID)
+### ==========================================
+
+### 3.1. Admin xem chi tiết
+GET http://localhost:8080/api/v1/teachers/admin/2
+
+### 3.2. Học viên xem chi tiết (Kỳ vọng: 200 OK nếu chưa xóa, lỗi nếu đã xóa)
+GET http://localhost:8080/api/v1/teachers/public/2
+
+
+### ==========================================
+### 4. TEST CẬP NHẬT TEACHER (PUT)
+### ==========================================
+
+### 4.1. Chính giảng viên tự cập nhật thông tin cá nhân (Kỳ vọng: 200 OK)
+PUT http://localhost:8080/api/v1/teachers/me/2
+Content-Type: application/json
+
+{
+  "fullName": "Đặng Trung Hiếu (Đã đổi tên)",
+  "phone": "0123999999"
+}
+
+### 4.2. Admin cập nhật Teacher (Kỳ vọng: 200 OK)
+PUT http://localhost:8080/api/v1/teachers/admin/2
+Content-Type: application/json
+
+{
+  "userId": 3,
+  "fullName": "Đặng Trung Hiếu (Admin sửa)",
+  "phone": "0123888888"
+}
+
+
+### ==========================================
+### 5. TEST XÓA TEACHER (DELETE)
+### ==========================================
+
+### 5.1. Admin xóa mềm Teacher (Kỳ vọng: 204 No Content)
+DELETE http://localhost:8080/api/v1/teachers/admin/2

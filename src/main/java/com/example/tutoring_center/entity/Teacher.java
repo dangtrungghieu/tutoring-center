@@ -11,8 +11,9 @@ public class Teacher {
     private String fullName;
     private String phone;
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
+    private boolean isDeleted = Boolean.FALSE;
 
     public Teacher() {}
     public Teacher(String fullName, String phone, User user) {
@@ -51,5 +52,13 @@ public class Teacher {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

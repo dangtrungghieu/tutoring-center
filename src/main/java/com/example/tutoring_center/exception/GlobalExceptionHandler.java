@@ -1,6 +1,7 @@
 package com.example.tutoring_center.exception;
 
 import com.example.tutoring_center.custom_exception.DuplicateException;
+import com.example.tutoring_center.custom_exception.InvalidStateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.example.tutoring_center.dto.ErrorResponse;
@@ -31,5 +32,9 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse duplicateResourceException(DuplicateException e) {
         return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
+    }
+    @ExceptionHandler(InvalidStateException.class)
+    public ErrorResponse invalidStateException(InvalidStateException e) {
+        return new ErrorResponse(400, e.getMessage());
     }
 }
