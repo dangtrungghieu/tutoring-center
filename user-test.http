@@ -42,7 +42,7 @@ Content-Type: application/json
   "role": "STUDENT"
 }
 
-### 1.5. Lỗi Nghiệp vụ - Trùng Email (Kỳ vọng: Lỗi do RuntimeException ném ra)
+### 1.5. Lỗi Nghiệp vụ - Trùng Email (Kỳ vọng: Lỗi do DuplicateException ném ra)
 ### Lưu ý: Phải chạy request 1.1 thành công trước rồi mới chạy request này.
 POST http://localhost:8080/api/v1/users
 Content-Type: application/json

@@ -1,5 +1,6 @@
 package com.example.tutoring_center.exception;
 
+import com.example.tutoring_center.custom_exception.DuplicateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import com.example.tutoring_center.dto.ErrorResponse;
@@ -25,5 +26,10 @@ public class GlobalExceptionHandler {
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getFieldErrors().forEach(error -> {errors.put(error.getField(), error.getDefaultMessage());});
         return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Dữ liệu đầu vào không hợp lệ!", errors);
+    }
+    @ExceptionHandler(DuplicateException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse duplicateResourceException(DuplicateException e) {
+        return new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
     }
 }

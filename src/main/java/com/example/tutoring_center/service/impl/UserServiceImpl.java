@@ -1,5 +1,6 @@
 package com.example.tutoring_center.service.impl;
 
+import com.example.tutoring_center.custom_exception.DuplicateException;
 import com.example.tutoring_center.dto.UserRequest;
 import com.example.tutoring_center.dto.UserRequestUpdate;
 import com.example.tutoring_center.dto.UserResponse;
@@ -23,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse createUser(UserRequest userRequest){
         if (userRepository.existsByEmail(userRequest.email())){
-            throw new RuntimeException("Email đã được sử dụng!");
+            throw new DuplicateException("Email đã được sử dụng!");
         }
         User user = new User();
         user.setEmail(userRequest.email());
