@@ -1,0 +1,60 @@
+### ==========================================
+### 1. TẠO HỌC VIÊN (POST)
+### ==========================================
+POST http://localhost:8080/api/v1/students
+Content-Type: application/json
+
+{
+  "userId": 4,
+  "fullName": "Học Viên A",
+  "phone": "0911222333"
+}
+
+
+### ==========================================
+### 2. TÌM KIẾM & LẤY DANH SÁCH (GET)
+### ==========================================
+
+### 2.1 Lấy toàn bộ danh sách
+GET http://localhost:8080/api/v1/students
+
+### 2.2 Tìm kiếm theo tên
+GET http://localhost:8080/api/v1/students?name=Viên A
+
+### 2.3 Tìm kiếm theo số điện thoại
+GET http://localhost:8080/api/v1/students?phone=0911
+
+### 2.4 Tìm kiếm theo email
+GET http://localhost:8080/api/v1/students?email=hieu.student.1@gmail.com
+
+
+### ==========================================
+### 3. CẬP NHẬT HỌC VIÊN
+### ==========================================
+
+### 3.1 Học viên tự cập nhật (PATCH)
+PATCH http://localhost:8080/api/v1/students/me/1
+Content-Type: application/json
+
+{
+  "fullName": "Học Viên A (Đã sửa đổi)",
+  "phone": "0999888777"
+}
+
+### 3.2 Admin cập nhật toàn diện (PUT)
+PUT http://localhost:8080/api/v1/students/admin/1
+Content-Type: application/json
+
+{
+  "userId": 5,
+  "fullName": "Học Viên A (Admin sửa)",
+  "phone": "0123456789"
+}
+
+
+### ==========================================
+### 4. XÓA HỌC VIÊN (DELETE)
+### ==========================================
+
+### 4.1 Admin xóa mềm Học viên (Kỳ vọng: 204 No Content)
+DELETE http://localhost:8080/api/v1/students/admin/1

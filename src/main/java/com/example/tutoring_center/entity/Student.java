@@ -1,6 +1,7 @@
 package com.example.tutoring_center.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "students")
@@ -8,11 +9,13 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String fullName;
     private String phone;
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", unique = true, nullable = false)
     private User user;
+    private Boolean isDeleted =  Boolean.FALSE;
 
     public Student() {}
     public Student(String fullName, String phone, User user) {
@@ -51,5 +54,13 @@ public class Student {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }
