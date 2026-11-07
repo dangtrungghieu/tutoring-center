@@ -3,14 +3,17 @@ package com.example.tutoring_center.service.impl;
 import com.example.tutoring_center.custom_exception.DuplicateException;
 import com.example.tutoring_center.dto.ClassRequest;
 import com.example.tutoring_center.dto.ClassResponse;
-import com.example.tutoring_center.entity.Room;
-import com.example.tutoring_center.entity.Shift;
+import com.example.tutoring_center.dto.EnrollmentRequest;
+import com.example.tutoring_center.dto.EnrollmentResponse;
+import com.example.tutoring_center.entity.*;
+import com.example.tutoring_center.entity.Class;
 import com.example.tutoring_center.repository.ClassRepository;
+import com.example.tutoring_center.repository.EnrollmentRepository;
 import com.example.tutoring_center.repository.ShiftRepository;
+import com.example.tutoring_center.repository.StudentRepository;
 import com.example.tutoring_center.service.ClassService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import com.example.tutoring_center.entity.Class;
 
 import java.util.List;
 
@@ -18,9 +21,13 @@ import java.util.List;
 public class ClassServiceImpl implements ClassService {
     private final ClassRepository classRepository;
     private final ShiftRepository shiftRepository;
-    public ClassServiceImpl(ClassRepository classRepository, ShiftRepository shiftRepository) {
+    private final EnrollmentRepository enrollmentRepository;
+    private final StudentRepository studentRepository;
+    public ClassServiceImpl(ClassRepository classRepository, ShiftRepository shiftRepository,  EnrollmentRepository enrollmentRepository, StudentRepository studentRepository) {
         this.classRepository = classRepository;
         this.shiftRepository = shiftRepository;
+        this.enrollmentRepository = enrollmentRepository;
+        this.studentRepository = studentRepository;
     }
     private ClassResponse mapToClassResponse(Class clazz) {
         return new ClassResponse(clazz.getId(), clazz.getSubject(),clazz.getGrade(), clazz.getShift().getDayOfWeek(),clazz.getShift().getStartTime(),clazz.getShift().getEndTime(),clazz.getShift().getRoom().getAddress());
@@ -73,5 +80,23 @@ public class ClassServiceImpl implements ClassService {
     public void deleteClass(Long id){
         Class clazz = classRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy lớp học!"));
         clazz.setDeleted(true);
+    }
+    //API Enrollment
+    private EnrollmentResponse mapToEnrollmentResponse(Enrollment enrollment){
+        return new EnrollmentResponse(enrollment.getStudent().getFullName(), enrollment.getStudentClass().getSubject(), enrollment.getStudentClass().getGrade(), enrollment.getCreatedAt());
+    }
+    @Override
+    public EnrollmentResponse createEnrollment(Long classId, EnrollmentRequest enrollmentRequest) {
+        Class clazz = classRepository.findById(classId).orElseThrow(() -> new RuntimeException("Không tìm thấy lớp học này!"));
+        Student student = studentRepository.findById(enrollmentRequest.studentId()).orElseThrow(() -> new RuntimeException("Không tìm thấy học sinh này!"));
+        if(enrollmentRepository.existsByStudentIdAndClassId(student.getId(), clazz.getId())){
+            throw new DuplicateException("Học sinh đã đăng ký lớp này rồi!");
+        }
+        Enrollment enrollment = new Enrollment();
+        enrollment.setStudent(student);
+        enrollment.setStudentClass(clazz);
+        enrollment.setState("ACTIVE");
+        clazz.getEnrollments().add(enrollment);
+        return mapToEnrollmentResponse(enrollmentRepository.save(enrollment));
     }
 }

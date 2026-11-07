@@ -2,6 +2,9 @@ package com.example.tutoring_center.controller;
 
 import com.example.tutoring_center.dto.ClassRequest;
 import com.example.tutoring_center.dto.ClassResponse;
+import com.example.tutoring_center.dto.EnrollmentRequest;
+import com.example.tutoring_center.dto.EnrollmentResponse;
+import com.example.tutoring_center.entity.Class;
 import com.example.tutoring_center.service.ClassService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -55,4 +58,10 @@ public class ClassController {
         classService.deleteClass(id);
         return ResponseEntity.noContent().build();
     }
+    //API Enrollments
+    @PostMapping("/{classId}/students")
+    public ResponseEntity<EnrollmentResponse> createEnrollment(@PathVariable @NotNull Long classId, @RequestBody EnrollmentRequest enrollmentRequest) {
+        return  ResponseEntity.ok(classService.createEnrollment(classId, enrollmentRequest));
+    }
+
 }

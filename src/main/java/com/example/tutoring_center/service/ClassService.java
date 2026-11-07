@@ -2,6 +2,8 @@ package com.example.tutoring_center.service;
 
 import com.example.tutoring_center.dto.ClassRequest;
 import com.example.tutoring_center.dto.ClassResponse;
+import com.example.tutoring_center.dto.EnrollmentRequest;
+import com.example.tutoring_center.dto.EnrollmentResponse;
 
 import java.util.List;
 
@@ -14,4 +16,5 @@ public interface ClassService {
     List<ClassResponse> findClassByShiftDayOfWeek(Integer shiftDayOfWeek);
     ClassResponse updateClass(Long id, ClassRequest request);
     void deleteClass(Long id);
+    EnrollmentResponse createEnrollment(Long classId,EnrollmentRequest enrollmentRequest);
 }
