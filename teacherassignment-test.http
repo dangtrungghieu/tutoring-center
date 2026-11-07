@@ -1,0 +1,8 @@
+### ==========================================
+### Admin phân công giảng viên (ID = 2) dạy Lớp học (ID = 1)
+POST http://localhost:8080/api/v1/classes/1/teachers
+Content-Type: application/json
+
+{
+  "teacherId": 2
+}

@@ -1,9 +1,6 @@
 package com.example.tutoring_center.controller;
 
-import com.example.tutoring_center.dto.ClassRequest;
-import com.example.tutoring_center.dto.ClassResponse;
-import com.example.tutoring_center.dto.EnrollmentRequest;
-import com.example.tutoring_center.dto.EnrollmentResponse;
+import com.example.tutoring_center.dto.*;
 import com.example.tutoring_center.entity.Class;
 import com.example.tutoring_center.service.ClassService;
 import jakarta.validation.Valid;
@@ -50,7 +47,7 @@ public class ClassController {
         return ResponseEntity.ok(classService.findAllClassesForAdmin());
     }
     @PutMapping("/admin/{id}")
-    public ResponseEntity<ClassResponse> updateClass(@PathVariable @NotNull Long id, @RequestBody ClassRequest classRequest) {
+    public ResponseEntity<ClassResponse> updateClass(@PathVariable @NotNull Long id, @RequestBody @Valid ClassRequest classRequest) {
         return ResponseEntity.ok(classService.updateClass(id, classRequest));
     }
     @DeleteMapping("/admin/{id}")
@@ -60,8 +57,13 @@ public class ClassController {
     }
     //API Enrollments
     @PostMapping("/{classId}/students")
-    public ResponseEntity<EnrollmentResponse> createEnrollment(@PathVariable @NotNull Long classId, @RequestBody EnrollmentRequest enrollmentRequest) {
+    public ResponseEntity<EnrollmentResponse> createEnrollment(@PathVariable @NotNull Long classId, @RequestBody @Valid EnrollmentRequest enrollmentRequest) {
         return  ResponseEntity.ok(classService.createEnrollment(classId, enrollmentRequest));
+    }
+    //API TeacherAssignment
+    @PostMapping("/{classId}/teachers")
+    public ResponseEntity<TeacherAssignmentResponse> createTeacherAssignment(@PathVariable @NotNull Long classId, @RequestBody @Valid TeacherAssignmentRequest teacherAssignmentRequest) {
+        return ResponseEntity.ok(classService.createTeacherAssignment(classId, teacherAssignmentRequest));
     }
 
 }

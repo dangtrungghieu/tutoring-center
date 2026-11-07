@@ -1,0 +1,7 @@
+### Học viên (ID = 1) đăng ký vào Lớp học (ID = 1)
+POST http://localhost:8080/api/v1/classes/1/students
+Content-Type: application/json
+
+{
+  "studentId": 1
+}
