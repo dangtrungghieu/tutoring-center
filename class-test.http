@@ -1,0 +1,45 @@
+### ==========================================
+### 1. TẠO LỚP HỌC MỚI (POST)
+### ==========================================
+POST http://localhost:8080/api/v1/classes
+Content-Type: application/json
+
+{
+  "subject": "Toán Đại Số 11",
+  "grade": 11,
+  "shiftId": 2
+}
+
+### ==========================================
+### 2. TÌM KIẾM & LẤY DANH SÁCH (GET)
+### ==========================================
+
+### 2.1 Admin lấy toàn bộ danh sách lớp
+GET http://localhost:8080/api/v1/classes/admin
+
+### 2.2 Học sinh xem danh sách lớp (Kỳ vọng: Không thấy lớp bị xóa mềm)
+GET http://localhost:8080/api/v1/classes/student
+
+### 2.3 Xem chi tiết lớp học theo ID
+GET http://localhost:8080/api/v1/classes/1
+
+### 2.4 Tìm lớp theo thứ trong tuần (Ví dụ: 2 là Thứ 2)
+GET http://localhost:8080/api/v1/classes?shiftDayOfWeek=3
+
+### ==========================================
+### 3. CẬP NHẬT LỚP HỌC (PUT)
+### ==========================================
+PUT http://localhost:8080/api/v1/classes/admin/1
+Content-Type: application/json
+
+{
+  "subject": "Toán Hình Học 11 (Cập nhật)",
+  "grade": 11,
+  "shiftId": 2
+}
+
+### ==========================================
+### 4. XÓA LỚP HỌC (DELETE)
+### ==========================================
+### Admin xóa mềm Lớp học (Kỳ vọng: Lớp học chuyển isDeleted = true)
+DELETE http://localhost:8080/api/v1/classes/admin/1
