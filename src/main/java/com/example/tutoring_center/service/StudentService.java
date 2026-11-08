@@ -3,6 +3,7 @@ package com.example.tutoring_center.service;
 import com.example.tutoring_center.dto.StudentRequest;
 import com.example.tutoring_center.dto.StudentRequestUpdate;
 import com.example.tutoring_center.dto.StudentResponse;
+import com.example.tutoring_center.dto.StudentScheduleResponse;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface StudentService {
     StudentResponse updateStudentForAdmin(Long id, StudentRequest studentRequest);
     //void deleteStudentByIdForTeacher(Long id);
     void deleteStudentByIdForAdmin(Long id);
+    //API schedules with student
+    List<StudentScheduleResponse> findAllStudentSchedules(Long studentId);
 }

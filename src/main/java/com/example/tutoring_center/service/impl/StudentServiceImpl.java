@@ -3,8 +3,10 @@ package com.example.tutoring_center.service.impl;
 import com.example.tutoring_center.custom_exception.DuplicateException;
 import com.example.tutoring_center.custom_exception.InvalidStateException;
 import com.example.tutoring_center.dto.*;
+import com.example.tutoring_center.entity.Enrollment;
 import com.example.tutoring_center.entity.Student;
 import com.example.tutoring_center.entity.User;
+import com.example.tutoring_center.repository.EnrollmentRepository;
 import com.example.tutoring_center.repository.StudentRepository;
 import com.example.tutoring_center.repository.UserRepository;
 import com.example.tutoring_center.service.StudentService;
@@ -17,9 +19,11 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
-    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository) {
+    private final EnrollmentRepository enrollmentRepository;
+    public StudentServiceImpl(StudentRepository studentRepository, UserRepository userRepository, EnrollmentRepository enrollmentRepository) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
+        this.enrollmentRepository = enrollmentRepository;
     }
     private StudentResponse mapStudentToStudentResponse(Student student) {
         UserResponseToStudent userResponseToStudent = new UserResponseToStudent(student.getUser().getEmail(),student.getUser().getRole());
@@ -91,5 +95,19 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy học sinh có ID là: " + id));
         student.setDeleted(true);
         student.getUser().setRole("INACTIVE_STUDENT");
+    }
+    //API Student Schedules
+    private StudentScheduleResponse mapToStudentScheduleResponse(Enrollment enrollment){
+        return new StudentScheduleResponse(
+                enrollment.getStudentClass().getSubject(),
+                enrollment.getStudentClass().getGrade(),
+                enrollment.getStudentClass().getShift().getDayOfWeek(),
+                enrollment.getStudentClass().getShift().getStartTime(),
+                enrollment.getStudentClass().getShift().getEndTime(),
+                enrollment.getStudentClass().getShift().getRoom().getAddress());
+    }
+    @Override
+    public List<StudentScheduleResponse> findAllStudentSchedules(Long studentId){
+        return enrollmentRepository.findByStudentIdAndStudentClassIsDeletedFalse(studentId).stream().map(this::mapToStudentScheduleResponse).toList();
     }
 }

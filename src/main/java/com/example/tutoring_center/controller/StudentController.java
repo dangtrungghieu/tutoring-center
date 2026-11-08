@@ -3,6 +3,7 @@ package com.example.tutoring_center.controller;
 import com.example.tutoring_center.dto.StudentRequest;
 import com.example.tutoring_center.dto.StudentRequestUpdate;
 import com.example.tutoring_center.dto.StudentResponse;
+import com.example.tutoring_center.dto.StudentScheduleResponse;
 import com.example.tutoring_center.service.StudentService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -52,5 +53,10 @@ public class StudentController {
     public ResponseEntity<Void> deleteStudent(@PathVariable @NotNull Long id) {
         studentService.deleteStudentByIdForAdmin(id);
         return ResponseEntity.noContent().build();
+    }
+    //API Student Schedules
+    @GetMapping("/{studentId}/schedules")
+    public ResponseEntity<List<StudentScheduleResponse>> getSchedules(@PathVariable @NotNull Long studentId) {
+        return ResponseEntity.ok(studentService.findAllStudentSchedules(studentId));
     }
 }
